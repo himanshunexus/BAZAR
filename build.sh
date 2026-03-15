@@ -6,6 +6,10 @@
 # ──────────────────────────────────────
 set -o errexit
 
+# Force production settings — manage.py defaults to development which
+# tries to load debug_toolbar (not installed in production).
+export DJANGO_SETTINGS_MODULE=localbazaarhub.settings.production
+
 echo "Installing dependencies..."
 pip install -r requirements.txt
 
