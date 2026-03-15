@@ -11,7 +11,7 @@ from apps.shops.models import Shop
 
 from .filters import ProductFilter
 from .forms import ProductForm, ProductImageFormSet
-from .models import Product
+from .models import Product, ProductCategory
 
 
 def product_detail(request, shop_slug, slug):
@@ -62,6 +62,11 @@ def product_list_seller(request):
 def product_add(request):
     """Add product – seller only."""
     shop = get_object_or_404(Shop, owner=request.user)
+
+    # Auto-seed product categories if the table is empty (safety net)
+    if not ProductCategory.objects.exists():
+        _seed_product_categories()
+
     if request.method == 'POST':
         form = ProductForm(request.POST)
         formset = ProductImageFormSet(request.POST, request.FILES)
@@ -173,3 +178,26 @@ def bulk_import(request):
             messages.success(request, f'{count} products imported successfully.')
         return redirect('products:seller_list')
     return render(request, 'seller/bulk_import.html', {'shop': shop})
+
+
+def _seed_product_categories():
+    """One-time inline seed if build.sh seed_data was skipped."""
+    CATS = [
+        {'name': 'Rice & Grains', 'slug': 'rice-grains'},
+        {'name': 'Dal & Pulses', 'slug': 'dal-pulses'},
+        {'name': 'Cooking Oil', 'slug': 'cooking-oil'},
+        {'name': 'Spices & Masala', 'slug': 'spices-masala'},
+        {'name': 'Snacks & Biscuits', 'slug': 'snacks-biscuits'},
+        {'name': 'Beverages', 'slug': 'beverages'},
+        {'name': 'Dairy & Eggs', 'slug': 'dairy-eggs'},
+        {'name': 'Personal Care', 'slug': 'personal-care'},
+        {'name': 'Cleaning & Household', 'slug': 'cleaning-household'},
+        {'name': 'Mobile Accessories', 'slug': 'mobile-accessories'},
+        {'name': 'Clothing - Men', 'slug': 'clothing-men'},
+        {'name': 'Clothing - Women', 'slug': 'clothing-women'},
+        {'name': 'Medicines', 'slug': 'medicines'},
+        {'name': 'Fresh Fruits', 'slug': 'fresh-fruits'},
+        {'name': 'Fresh Vegetables', 'slug': 'fresh-vegetables'},
+    ]
+    for data in CATS:
+        ProductCategory.objects.get_or_create(slug=data['slug'], defaults=data)
