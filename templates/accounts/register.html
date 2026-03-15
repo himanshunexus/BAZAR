@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if user_type == 'seller' %}Seller Registration{% else %}Create Account{% endif %}{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto px-4 py-10">
+    <div class="bg-white rounded-xl shadow-sm p-6">
+        <h1 class="text-2xl font-bold mb-2 text-center">
+            {% if user_type == 'seller' %}Create Seller Account{% else %}Create Account{% endif %}
+        </h1>
+        <p class="text-center text-gray-500 text-sm mb-6">
+            {% if user_type == 'seller' %}Register to list your shop on BAZAR{% else %}Sign up to start shopping local{% endif %}
+        </p>
+
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            {% for field in form %}
+            <div>
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ field.label }}</label>
+                {{ field }}
+                {% for error in field.errors %}<p class="text-xs text-red-500 mt-1">{{ error }}</p>{% endfor %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
+                {% if user_type == 'seller' %}Create Seller Account{% else %}Create Account{% endif %}
+            </button>
+        </form>
+
+        <div class="mt-6 text-center text-sm text-gray-500">
+            Already have an account? <a href="{% url 'accounts:login' %}" class="text-indigo-600 hover:underline">Login</a>
+        </div>
+
+        {% if user_type != 'seller' %}
+        <div class="mt-2 text-center text-sm text-gray-500">
+            Want to sell? <a href="{% url 'accounts:register_seller' %}" class="text-indigo-600 hover:underline">Register as Seller</a>
+        </div>
+        {% else %}
+        <div class="mt-2 text-center text-sm text-gray-500">
+            Just browsing? <a href="{% url 'accounts:register' %}" class="text-indigo-600 hover:underline">Register as Customer</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

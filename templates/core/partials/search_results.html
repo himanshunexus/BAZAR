@@ -1,0 +1,29 @@
+{% if shops %}
+<div class="mb-10">
+    <h2 class="text-lg font-semibold mb-4">Shops ({{ shops|length }})</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {% for shop in shops %}
+        {% include 'shops/partials/shop_card.html' with shop=shop %}
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if products %}
+<div>
+    <h2 class="text-lg font-semibold mb-4">Products ({{ products|length }})</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        {% for product in products %}
+        {% include 'products/partials/product_card.html' with product=product %}
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if not shops and not products and query %}
+<div class="text-center py-16 text-gray-400">
+    <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+    <p class="text-lg">No results found for "{{ query }}"</p>
+    <p class="text-sm mt-2">Try a different search term or browse categories.</p>
+</div>
+{% endif %}

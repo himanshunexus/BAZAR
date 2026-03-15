@@ -1,0 +1,7 @@
+{% for shop in shops %}
+{% include 'shops/partials/shop_card.html' with shop=shop %}
+{% empty %}
+<div class="col-span-full text-center py-16 text-gray-400">
+    <p class="text-lg">No shops found.</p>
+</div>
+{% endfor %}

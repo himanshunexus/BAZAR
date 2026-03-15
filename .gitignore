@@ -1,0 +1,71 @@
+# ──────────────────────────────────────
+# Python
+# ──────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ──────────────────────────────────────
+# Virtual Environments
+# ──────────────────────────────────────
+venv/
+env/
+.venv/
+ENV/
+
+# ──────────────────────────────────────
+# Environment Variables
+# ──────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ──────────────────────────────────────
+# Django
+# ──────────────────────────────────────
+*.sqlite3
+db.sqlite3-journal
+staticfiles/
+media/
+django.log
+
+# ──────────────────────────────────────
+# IDE / Editor
+# ──────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+
+# ──────────────────────────────────────
+# OS
+# ──────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ──────────────────────────────────────
+# Node (TailwindCSS build tools if added later)
+# ──────────────────────────────────────
+node_modules/
+package-lock.json
+
+# ──────────────────────────────────────
+# Misc
+# ──────────────────────────────────────
+*.log
+*.pot
+*.bak
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/

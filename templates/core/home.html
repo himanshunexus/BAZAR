@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Discover Shops Around You{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+    <div class="max-w-7xl mx-auto px-4 py-12 md:py-20">
+        <div class="text-center">
+            <h1 class="text-3xl md:text-5xl font-bold mb-2">BAZAR</h1>
+            <p class="text-xl md:text-2xl font-medium text-indigo-100 mb-3">Discover Shops Around You</p>
+            <p class="text-base text-indigo-200 mb-8 max-w-xl mx-auto">A hyperlocal marketplace where you can explore nearby shops and browse their product catalogs.</p>
+
+            <!-- City / Pincode Search -->
+            <form action="{% url 'shops:list' %}" method="get" class="max-w-lg mx-auto">
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" name="city" placeholder="Enter your city..."
+                           class="flex-1 px-4 py-3 rounded-lg text-gray-800 focus:ring-2 focus:ring-yellow-400 focus:outline-none">
+                    <input type="text" name="pincode" placeholder="or Pincode"
+                           class="sm:w-32 px-4 py-3 rounded-lg text-gray-800 focus:ring-2 focus:ring-yellow-400 focus:outline-none">
+                    <button type="submit" class="bg-yellow-400 text-gray-900 font-semibold px-6 py-3 rounded-lg hover:bg-yellow-300 transition">
+                        Find Shops
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Categories -->
+<section class="max-w-7xl mx-auto px-4 py-10">
+    <h2 class="text-2xl font-bold mb-6">Browse by Category</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        {% for cat in categories %}
+        <a href="{% url 'core:category' slug=cat.slug %}" class="bg-white rounded-xl p-4 text-center shadow-sm hover:shadow-md transition border border-gray-100">
+            <div class="text-3xl mb-2">{{ cat.icon|default:"🏪" }}</div>
+            <div class="text-sm font-medium text-gray-700">{{ cat.name }}</div>
+        </a>
+        {% empty %}
+        <p class="text-gray-400 col-span-full text-center">Categories coming soon.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Popular Cities -->
+{% if cities %}
+<section class="bg-white py-10">
+    <div class="max-w-7xl mx-auto px-4">
+        <h2 class="text-2xl font-bold mb-6">Popular Cities</h2>
+        <div class="flex flex-wrap gap-3">
+            {% for city in cities %}
+            <a href="{% url 'shops:list' %}?city={{ city }}" class="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-full text-sm font-medium hover:bg-indigo-100 transition">
+                {{ city }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Featured Shops -->
+{% if featured_shops %}
+<section class="max-w-7xl mx-auto px-4 py-10">
+    <h2 class="text-2xl font-bold mb-6">Featured Shops</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {% for shop in featured_shops %}
+        {% include 'shops/partials/shop_card.html' with shop=shop %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- Recent Shops -->
+{% if recent_shops %}
+<section class="bg-white py-10">
+    <div class="max-w-7xl mx-auto px-4">
+        <h2 class="text-2xl font-bold mb-6">Recently Added Shops</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% for shop in recent_shops %}
+            {% include 'shops/partials/shop_card.html' with shop=shop %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

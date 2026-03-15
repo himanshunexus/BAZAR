@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete {{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto px-4 py-10">
+    <div class="bg-white rounded-xl shadow-sm p-6 text-center">
+        <div class="text-4xl mb-4">⚠️</div>
+        <h1 class="text-xl font-bold mb-2">Delete Product?</h1>
+        <p class="text-gray-500 mb-6">Are you sure you want to delete <strong>"{{ product.name }}"</strong>? This action cannot be undone.</p>
+        <div class="flex gap-3 justify-center">
+            <a href="{% url 'products:seller_list' %}" class="px-6 py-2.5 border border-gray-300 rounded-lg text-sm hover:bg-gray-50">Cancel</a>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="px-6 py-2.5 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

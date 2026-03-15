@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Search{% if query %}: {{ query }}{% endif %}{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6">
+        {% if query %}Search results for "{{ query }}"{% else %}Search{% endif %}
+    </h1>
+
+    <form action="{% url 'core:search' %}" method="get" class="mb-8 max-w-lg">
+        <div class="flex gap-3">
+            <input type="text" name="q" value="{{ query }}"
+                   placeholder="Search shops, products..."
+                   class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                   hx-get="{% url 'core:search' %}" hx-trigger="keyup changed delay:300ms"
+                   hx-target="#search-results" hx-push-url="true">
+            <button type="submit" class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700">Search</button>
+        </div>
+    </form>
+
+    <div id="search-results">
+        {% include 'core/partials/search_results.html' %}
+    </div>
+</div>
+{% endblock %}

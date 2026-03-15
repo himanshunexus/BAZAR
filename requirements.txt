@@ -1,0 +1,39 @@
+# ──────────────────────────────────────
+# LocalBazaarHub — Python Dependencies
+# ──────────────────────────────────────
+
+# Framework
+Django>=5.0,<6.0
+
+# Database
+psycopg2-binary>=2.9
+dj-database-url>=2.1
+
+# Server
+gunicorn>=22.0
+whitenoise>=6.6
+
+# Forms & Templates
+django-crispy-forms>=2.1
+crispy-tailwind>=1.0
+django-htmx>=1.17
+
+# Filtering & Import/Export
+django-filter>=24.0
+django-import-export>=4.0
+
+# Images
+django-imagekit>=5.0
+Pillow>=10.0
+
+# PDF Generation
+WeasyPrint>=61.0
+
+# Environment & Config
+python-decouple>=3.8
+
+# Payment (stub — no keys needed yet)
+razorpay>=1.4
+
+# Dev tools
+django-debug-toolbar>=4.3

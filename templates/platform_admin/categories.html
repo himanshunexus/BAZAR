@@ -1,0 +1,75 @@
+{% extends 'platform_admin/base.html' %}
+
+{% block title %}Category Management{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">Category Management</h1>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Shop Categories -->
+    <div>
+        <div class="bg-white rounded-xl shadow-sm p-5">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="font-semibold text-lg">Shop Categories</h2>
+                <span class="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full text-xs">{{ shop_categories|length }}</span>
+            </div>
+            <form method="post" action="{% url 'platform_admin:category_create' %}" class="flex gap-2 mb-4">
+                {% csrf_token %}
+                <input type="hidden" name="type" value="shop">
+                <input type="text" name="name" placeholder="New shop category..." required
+                       class="flex-1 px-3 py-2 border rounded-lg text-sm">
+                <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-700">Add</button>
+            </form>
+            <div class="space-y-2 max-h-96 overflow-y-auto">
+                {% for cat in shop_categories %}
+                <div class="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <span class="text-sm font-medium">{{ cat.name }}</span>
+                        {% if cat.parent %}<span class="text-xs text-gray-400 ml-1">({{ cat.parent.name }})</span>{% endif %}
+                    </div>
+                    <form method="post" action="{% url 'platform_admin:category_delete' cat.pk %}" onsubmit="return confirm('Delete this category?')">
+                        {% csrf_token %}<input type="hidden" name="type" value="shop">
+                        <button class="text-red-500 hover:text-red-700 text-xs">Delete</button>
+                    </form>
+                </div>
+                {% empty %}
+                <p class="text-sm text-gray-400 text-center py-4">No shop categories.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Categories -->
+    <div>
+        <div class="bg-white rounded-xl shadow-sm p-5">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="font-semibold text-lg">Product Categories</h2>
+                <span class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full text-xs">{{ product_categories|length }}</span>
+            </div>
+            <form method="post" action="{% url 'platform_admin:category_create' %}" class="flex gap-2 mb-4">
+                {% csrf_token %}
+                <input type="hidden" name="type" value="product">
+                <input type="text" name="name" placeholder="New product category..." required
+                       class="flex-1 px-3 py-2 border rounded-lg text-sm">
+                <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-purple-700">Add</button>
+            </form>
+            <div class="space-y-2 max-h-96 overflow-y-auto">
+                {% for cat in product_categories %}
+                <div class="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <span class="text-sm font-medium">{{ cat.name }}</span>
+                        {% if cat.parent %}<span class="text-xs text-gray-400 ml-1">({{ cat.parent.name }})</span>{% endif %}
+                    </div>
+                    <form method="post" action="{% url 'platform_admin:category_delete' cat.pk %}" onsubmit="return confirm('Delete this category?')">
+                        {% csrf_token %}<input type="hidden" name="type" value="product">
+                        <button class="text-red-500 hover:text-red-700 text-xs">Delete</button>
+                    </form>
+                </div>
+                {% empty %}
+                <p class="text-sm text-gray-400 text-center py-4">No product categories.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

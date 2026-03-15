@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Shopping Cart{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6">Shopping Cart</h1>
+
+    {% if cart|length > 0 %}
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="divide-y">
+            {% for item in cart %}
+            <div class="p-4 flex items-center gap-4">
+                {% if item.product.images.first %}
+                <img src="{{ item.product.images.first.image.url }}" alt="{{ item.product.name }}" class="w-16 h-16 rounded-lg object-cover" loading="lazy">
+                {% else %}
+                <div class="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center text-gray-300">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                </div>
+                {% endif %}
+                <div class="flex-1 min-w-0">
+                    <a href="{{ item.product.get_absolute_url }}" class="font-medium text-gray-800 hover:text-indigo-600 truncate block">{{ item.product.name }}</a>
+                    <p class="text-sm text-gray-500">{{ item.product.shop.name }}</p>
+                    <p class="text-sm font-semibold text-indigo-600">₹{{ item.price }} x {{ item.quantity }} = ₹{{ item.total_price }}</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <form action="{% url 'cart:update' product_id=item.product.id %}" method="post" class="flex items-center gap-1">
+                        {% csrf_token %}
+                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="99"
+                               class="w-16 px-2 py-1 border rounded text-center text-sm">
+                        <button type="submit" class="text-indigo-600 text-sm hover:underline">Update</button>
+                    </form>
+                    <form action="{% url 'cart:remove' product_id=item.product.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-500 text-sm hover:underline">Remove</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="p-4 bg-gray-50 flex items-center justify-between">
+            <span class="text-lg font-bold">Total: ₹{{ cart.total_price }}</span>
+            <a href="{% url 'cart:checkout' %}" class="bg-indigo-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-indigo-700 transition">
+                Proceed to Checkout
+            </a>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center py-16">
+        <svg class="w-20 h-20 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+        <p class="text-gray-500 text-lg mb-4">Your cart is empty</p>
+        <a href="{% url 'shops:list' %}" class="bg-indigo-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-indigo-700">Browse Shops</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

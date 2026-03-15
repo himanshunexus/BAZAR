@@ -1,0 +1,66 @@
+<nav class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center h-14">
+            <!-- Logo -->
+            <a href="{% url 'core:home' %}" class="text-xl font-bold text-indigo-600">
+                BAZAR
+            </a>
+
+            <!-- Search bar (desktop) -->
+            <div class="hidden md:flex flex-1 max-w-md mx-6">
+                <form action="{% url 'core:search' %}" method="get" class="w-full">
+                    <div class="relative">
+                        <input type="text" name="q" value="{{ request.GET.q }}"
+                               placeholder="Search shops, products..."
+                               class="w-full pl-4 pr-10 py-2 text-sm border border-gray-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                               hx-get="{% url 'core:search' %}" hx-trigger="keyup changed delay:300ms"
+                               hx-target="#search-results" hx-push-url="false">
+                        <button type="submit" class="absolute right-3 top-2.5 text-gray-400">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Nav links -->
+            <div class="flex items-center space-x-4 text-sm">
+                <a href="{% url 'shops:list' %}" class="hidden md:inline text-gray-600 hover:text-indigo-600">Shops</a>
+                <a href="{% url 'cart:detail' %}" class="relative text-gray-600 hover:text-indigo-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
+                    </svg>
+                    {% if cart|length > 0 %}
+                    <span class="absolute -top-1 -right-2 bg-indigo-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">{{ cart|length }}</span>
+                    {% endif %}
+                </a>
+                {% if user.is_authenticated %}
+                    {% if user.is_staff or user.is_superuser %}
+                    <a href="{% url 'platform_admin:dashboard' %}" class="text-indigo-600 font-medium hover:text-indigo-800">Admin</a>
+                    {% endif %}
+                    {% if user.is_seller %}
+                    <a href="{% url 'shops:dashboard' %}" class="text-gray-600 hover:text-indigo-600">Dashboard</a>
+                    {% endif %}
+                    <a href="{% url 'accounts:profile' %}" class="text-gray-600 hover:text-indigo-600">{{ user.get_short_name }}</a>
+                    <form method="post" action="{% url 'accounts:logout' %}" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-500 hover:text-red-600">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="text-gray-600 hover:text-indigo-600">Login</a>
+                    <a href="{% url 'accounts:register_seller' %}" class="bg-indigo-600 text-white px-3 py-1.5 rounded-full text-xs font-medium hover:bg-indigo-700">Sell on BAZAR</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Mobile search -->
+        <div class="md:hidden pb-3">
+            <form action="{% url 'core:search' %}" method="get">
+                <input type="text" name="q" value="{{ request.GET.q }}"
+                       placeholder="Search shops, products..."
+                       class="w-full pl-4 pr-10 py-2 text-sm border border-gray-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            </form>
+        </div>
+    </div>
+</nav>

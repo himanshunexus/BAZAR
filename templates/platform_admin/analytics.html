@@ -1,0 +1,98 @@
+{% extends 'platform_admin/base.html' %}
+
+{% block title %}Analytics{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">Platform Analytics</h1>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Shops by City -->
+    <div class="bg-white rounded-xl shadow-sm p-5">
+        <h2 class="font-semibold mb-4">Shops by City (Top 15)</h2>
+        {% if shops_by_city %}
+        <div class="space-y-2">
+            {% for item in shops_by_city %}
+            <div class="flex items-center gap-3">
+                <span class="text-sm text-gray-600 w-28 truncate">{{ item.city|default:"Unknown" }}</span>
+                <div class="flex-1 bg-gray-100 rounded-full h-5 overflow-hidden">
+                    <div class="bg-indigo-500 h-5 rounded-full flex items-center justify-end px-2"
+                         style="width: {% widthratio item.count shops_by_city.0.count 100 %}%; min-width: 2rem;">
+                        <span class="text-xs text-white font-medium">{{ item.count }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-sm text-gray-400 text-center py-8">No data yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- Products by Category -->
+    <div class="bg-white rounded-xl shadow-sm p-5">
+        <h2 class="font-semibold mb-4">Products by Category (Top 15)</h2>
+        {% if products_by_category %}
+        <div class="space-y-2">
+            {% for item in products_by_category %}
+            <div class="flex items-center gap-3">
+                <span class="text-sm text-gray-600 w-28 truncate">{{ item.category__name }}</span>
+                <div class="flex-1 bg-gray-100 rounded-full h-5 overflow-hidden">
+                    <div class="bg-purple-500 h-5 rounded-full flex items-center justify-end px-2"
+                         style="width: {% widthratio item.count products_by_category.0.count 100 %}%; min-width: 2rem;">
+                        <span class="text-xs text-white font-medium">{{ item.count }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-sm text-gray-400 text-center py-8">No data yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- Orders by Status -->
+    <div class="bg-white rounded-xl shadow-sm p-5">
+        <h2 class="font-semibold mb-4">Orders by Status</h2>
+        {% if orders_by_status %}
+        <div class="space-y-3">
+            {% for item in orders_by_status %}
+            <div class="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg">
+                <span class="text-sm font-medium capitalize
+                    {% if item.status == 'pending' %}text-yellow-700
+                    {% elif item.status == 'delivered' %}text-green-700
+                    {% elif item.status == 'cancelled' %}text-red-700
+                    {% else %}text-blue-700{% endif %}">
+                    {{ item.status }}
+                </span>
+                <span class="text-lg font-bold text-gray-700">{{ item.count }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-sm text-gray-400 text-center py-8">No orders yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- User Growth (last 30 days) -->
+    <div class="bg-white rounded-xl shadow-sm p-5">
+        <h2 class="font-semibold mb-4">User Registrations (Last 30 Days)</h2>
+        {% if users_by_day %}
+        <div class="space-y-1">
+            {% for item in users_by_day %}
+            <div class="flex items-center gap-3">
+                <span class="text-xs text-gray-500 w-20">{{ item.day }}</span>
+                <div class="flex-1 bg-gray-100 rounded-full h-4 overflow-hidden">
+                    <div class="bg-green-500 h-4 rounded-full flex items-center justify-end px-2"
+                         style="width: {% widthratio item.count users_by_day.0.count 100 %}%; min-width: 1.5rem;">
+                        <span class="text-xs text-white font-medium">{{ item.count }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-sm text-gray-400 text-center py-8">No registrations in the last 30 days.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

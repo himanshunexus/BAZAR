@@ -1,0 +1,54 @@
+{% extends 'platform_admin/base.html' %}
+
+{% block title %}Review Moderation{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">Review Moderation</h1>
+
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+    <table class="w-full text-sm">
+        <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
+            <tr>
+                <th class="px-4 py-3 text-left">User</th>
+                <th class="px-4 py-3 text-left">Shop / Product</th>
+                <th class="px-4 py-3 text-center">Rating</th>
+                <th class="px-4 py-3 text-left">Comment</th>
+                <th class="px-4 py-3 text-left">Date</th>
+                <th class="px-4 py-3 text-right">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y">
+            {% for review in reviews %}
+            <tr class="hover:bg-gray-50">
+                <td class="px-4 py-3 font-medium">{{ review.user.email|truncatechars:25 }}</td>
+                <td class="px-4 py-3 text-gray-500">
+                    {% if review.shop %}{{ review.shop.name }}{% endif %}
+                    {% if review.product %}<span class="text-xs text-gray-400">/ {{ review.product.name }}</span>{% endif %}
+                </td>
+                <td class="px-4 py-3 text-center">
+                    <span class="text-yellow-400">{% for i in "12345" %}{% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}{% endfor %}</span>
+                </td>
+                <td class="px-4 py-3 text-gray-600 max-w-xs truncate">{{ review.comment|default:"-"|truncatewords:15 }}</td>
+                <td class="px-4 py-3 text-gray-500 text-xs">{{ review.created_at|date:"d M Y" }}</td>
+                <td class="px-4 py-3 text-right">
+                    <form method="post" action="{% url 'platform_admin:review_action' review.pk %}" onsubmit="return confirm('Delete this review?')">
+                        {% csrf_token %}<input type="hidden" name="action" value="delete">
+                        <button class="px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="px-4 py-8 text-center text-gray-400">No reviews found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if reviews.has_other_pages %}
+<div class="mt-6 flex justify-center gap-2">
+    {% if reviews.has_previous %}<a href="?page={{ reviews.previous_page_number }}" class="px-3 py-2 bg-white border rounded-lg text-sm">Prev</a>{% endif %}
+    <span class="px-3 py-2 bg-indigo-600 text-white rounded-lg text-sm">{{ reviews.number }} / {{ reviews.paginator.num_pages }}</span>
+    {% if reviews.has_next %}<a href="?page={{ reviews.next_page_number }}" class="px-3 py-2 bg-white border rounded-lg text-sm">Next</a>{% endif %}
+</div>
+{% endif %}
+{% endblock %}
