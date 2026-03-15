@@ -73,12 +73,8 @@ CSRF_TRUSTED_ORIGINS = config(
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # ──────────────────────────────────────
-# Logging — console only (Render has read-only filesystem)
+# Logging — console only, WARNING+ level
 # ──────────────────────────────────────
 
-LOGGING['handlers'].pop('file', None)  # noqa: F405
-LOGGING['root']['handlers'] = ['console']  # noqa: F405
 LOGGING['root']['level'] = 'WARNING'  # noqa: F405
-LOGGING['loggers']['django']['handlers'] = ['console']  # noqa: F405
 LOGGING['loggers']['django']['level'] = 'WARNING'  # noqa: F405
-LOGGING['loggers']['django.request']['handlers'] = ['console']  # noqa: F405

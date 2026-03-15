@@ -145,9 +145,9 @@ def pdf_catalog(request):
 
     try:
         from weasyprint import HTML
-    except OSError:
+    except (ImportError, OSError):
         return HttpResponse(
-            'PDF generation is not available — system libraries (pango, cairo) are missing.',
+            'PDF generation is not available — WeasyPrint or its system libraries (pango, cairo) are missing.',
             status=503,
         )
 
