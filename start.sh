@@ -1,11 +1,4 @@
 #!/usr/bin/env bash
-# ──────────────────────────────────────
-# BAZAR — Start Script
-# Launches the Gunicorn production server.
-# ──────────────────────────────────────
 set -o errexit
 
-exec gunicorn localbazaarhub.wsgi:application \
-    --bind 0.0.0.0:${PORT:-8000} \
-    --workers ${WEB_CONCURRENCY:-3} \
-    --timeout 120
+gunicorn localbazaarhub.wsgi:application --bind 0.0.0.0:$PORT
