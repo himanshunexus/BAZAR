@@ -2,6 +2,8 @@
 Production settings for BAZAR.
 """
 
+import os
+
 import dj_database_url
 
 from decouple import Csv, config
@@ -56,13 +58,16 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 X_FRAME_OPTIONS = 'DENY'
 
-# CSRF trusted origins — list every production domain explicitly.
-# Wildcards like https://*.onrender.com are NOT supported by Django.
-# Set this env var to your actual Render URL, e.g.:
-#   CSRF_TRUSTED_ORIGINS=https://localbazaarhub.onrender.com
+# CSRF trusted origins — auto-detected from Render's RENDER_EXTERNAL_URL
+# env var (set automatically by Render on every service), so no manual
+# dashboard config is needed.  Falls back to CSRF_TRUSTED_ORIGINS env var
+# if set, then to https://localhost as last resort.
+_render_url = os.environ.get('RENDER_EXTERNAL_URL', '')
+_default_origins = _render_url if _render_url else 'https://localhost'
+
 CSRF_TRUSTED_ORIGINS = config(
     'CSRF_TRUSTED_ORIGINS',
-    default='https://localhost',
+    default=_default_origins,
     cast=Csv(),
 )
 
