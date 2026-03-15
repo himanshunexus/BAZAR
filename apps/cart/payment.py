@@ -13,7 +13,10 @@ from django.views.decorators.http import require_POST
 
 import razorpay
 
-client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+def _get_client():
+    """Lazy-init Razorpay client so stub keys don't crash at import time."""
+    return razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
 
 def create_order(request):
@@ -29,6 +32,7 @@ def create_order(request):
     }
 
     try:
+        client = _get_client()
         order = client.order.create(data=order_data)
         return JsonResponse({
             'order_id': order['id'],
@@ -45,6 +49,7 @@ def create_order(request):
 def payment_callback(request):
     """Verify Razorpay payment signature."""
     try:
+        client = _get_client()
         data = json.loads(request.body)
         params = {
             'razorpay_order_id': data.get('razorpay_order_id', ''),

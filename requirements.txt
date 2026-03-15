@@ -26,8 +26,8 @@ django-import-export>=4.0
 django-imagekit>=5.0
 Pillow>=10.0
 
-# PDF Generation
-WeasyPrint>=61.0
+# PDF Generation (installed separately in build.sh — needs system C libs)
+# WeasyPrint>=61.0
 
 # Environment & Config
 python-decouple>=3.8
