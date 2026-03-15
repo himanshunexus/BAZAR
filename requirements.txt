@@ -1,5 +1,5 @@
 # ──────────────────────────────────────
-# LocalBazaarHub — Python Dependencies
+# BAZAR — Python Dependencies
 # ──────────────────────────────────────
 
 # Framework

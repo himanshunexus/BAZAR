@@ -1,5 +1,5 @@
 """
-Development settings for LocalBazaarHub.
+Development settings for BAZAR.
 """
 
 from .base import *  # noqa: F401, F403

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ──────────────────────────────────────
-# LocalBazaarHub — Start Script
+# BAZAR — Start Script
 # Launches the Gunicorn production server.
 # ──────────────────────────────────────
 set -o errexit

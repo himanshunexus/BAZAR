@@ -1,5 +1,5 @@
 """
-Base settings for LocalBazaarHub project.
+Base settings for BAZAR project.
 Common settings shared between development and production.
 """
 
@@ -116,8 +116,11 @@ USE_TZ = True
 # ──────────────────────────────────────
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Only include static/ if it actually exists on disk
+_STATIC_DIR = BASE_DIR / 'static'
+STATICFILES_DIRS = [_STATIC_DIR] if _STATIC_DIR.is_dir() else []
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

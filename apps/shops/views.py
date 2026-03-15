@@ -142,7 +142,14 @@ def pdf_catalog(request):
     """Generate PDF catalog for seller's shop."""
     from django.http import HttpResponse
     from django.template.loader import render_to_string
-    from weasyprint import HTML
+
+    try:
+        from weasyprint import HTML
+    except OSError:
+        return HttpResponse(
+            'PDF generation is not available — system libraries (pango, cairo) are missing.',
+            status=503,
+        )
 
     shop = get_object_or_404(Shop, owner=request.user)
     products = shop.products.filter(is_active=True).prefetch_related('images')

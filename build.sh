@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ──────────────────────────────────────
-# LocalBazaarHub — Build Script
+# BAZAR — Build Script
 # Run before deployment to install deps,
 # apply migrations, and collect static files.
 # ──────────────────────────────────────
