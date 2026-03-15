@@ -34,6 +34,3 @@ python-decouple>=3.8
 
 # Payment (stub — no keys needed yet)
 razorpay>=1.4
-
-# Dev tools
-django-debug-toolbar>=4.3

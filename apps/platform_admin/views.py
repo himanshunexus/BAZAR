@@ -3,6 +3,7 @@ from datetime import timedelta
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Count, Sum
+from django.db.models.functions import TruncDate
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST
@@ -327,7 +328,7 @@ def analytics_page(request):
     thirty_days_ago = timezone.now() - timedelta(days=30)
     users_by_day = (
         User.objects.filter(date_joined__gte=thirty_days_ago)
-        .extra(select={'day': "date(date_joined)"})
+        .annotate(day=TruncDate('date_joined'))
         .values('day')
         .annotate(count=Count('id'))
         .order_by('day')
