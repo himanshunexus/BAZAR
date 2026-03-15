@@ -79,6 +79,10 @@ def shop_create(request):
     if hasattr(request.user, 'shop'):
         return redirect('shops:dashboard')
 
+    # Auto-seed categories if the table is empty (safety net for fresh DBs)
+    if not Category.objects.exists():
+        _seed_shop_categories()
+
     if request.method == 'POST':
         form = ShopForm(request.POST, request.FILES)
         if form.is_valid():
@@ -91,6 +95,26 @@ def shop_create(request):
     else:
         form = ShopForm()
     return render(request, 'shops/shop_form.html', {'form': form, 'title': 'Create Your Shop'})
+
+
+def _seed_shop_categories():
+    """One-time inline seed if build.sh seed_data was skipped."""
+    CATS = [
+        {'name': 'Grocery & Kirana', 'slug': 'grocery', 'icon': '\U0001f6d2', 'order': 1},
+        {'name': 'Electronics', 'slug': 'electronics', 'icon': '\U0001f4f1', 'order': 2},
+        {'name': 'Clothing & Fashion', 'slug': 'clothing', 'icon': '\U0001f457', 'order': 3},
+        {'name': 'Pharmacy', 'slug': 'pharmacy', 'icon': '\U0001f48a', 'order': 4},
+        {'name': 'Bakery & Sweets', 'slug': 'bakery', 'icon': '\U0001f370', 'order': 5},
+        {'name': 'Fruits & Vegetables', 'slug': 'fruits-vegetables', 'icon': '\U0001f96c', 'order': 6},
+        {'name': 'Hardware & Tools', 'slug': 'hardware', 'icon': '\U0001f527', 'order': 7},
+        {'name': 'Stationery & Books', 'slug': 'stationery', 'icon': '\U0001f4da', 'order': 8},
+        {'name': 'Beauty & Salon', 'slug': 'beauty', 'icon': '\U0001f487', 'order': 9},
+        {'name': 'Restaurant & Food', 'slug': 'restaurant', 'icon': '\U0001f37d\ufe0f', 'order': 10},
+        {'name': 'Home & Kitchen', 'slug': 'home-kitchen', 'icon': '\U0001f3e0', 'order': 11},
+        {'name': 'Sports & Fitness', 'slug': 'sports', 'icon': '\u26bd', 'order': 12},
+    ]
+    for data in CATS:
+        Category.objects.get_or_create(slug=data['slug'], defaults=data)
 
 
 @login_required
