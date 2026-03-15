@@ -19,4 +19,7 @@ python manage.py migrate --noinput
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
+echo "Seeding essential data..."
+python manage.py seed_data
+
 echo "Build complete."
