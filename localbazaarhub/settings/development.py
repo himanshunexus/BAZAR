@@ -42,10 +42,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # WhiteNoise for static in dev too
 # ──────────────────────────────────────
 
-STORAGES = {
-    'staticfiles': {
-        'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage',
-    },
+STORAGES['staticfiles'] = {  # noqa: F405
+    'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage',
 }
 
 # ──────────────────────────────────────

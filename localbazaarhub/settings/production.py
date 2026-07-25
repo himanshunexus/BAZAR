@@ -32,10 +32,8 @@ DATABASES = {
 # ManifestStaticFilesStorage crashes if any CSS/JS has a dangling
 # reference. Compressed-only is safe and still serves gzip+brotli.
 
-STORAGES = {
-    'staticfiles': {
-        'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage',
-    },
+STORAGES['staticfiles'] = {  # noqa: F405
+    'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage',
 }
 
 # ──────────────────────────────────────
