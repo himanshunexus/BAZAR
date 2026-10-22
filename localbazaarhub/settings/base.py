@@ -32,6 +32,7 @@ THIRD_PARTY_APPS = [
     'django_filters',
     'import_export',
     'imagekit',
+    'cloudinary_storage',
 ]
 
 LOCAL_APPS = [
@@ -124,6 +125,12 @@ STATICFILES_DIRS = [_STATIC_DIR] if _STATIC_DIR.is_dir() else []
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME', default=''),
+    'API_KEY': config('CLOUDINARY_API_KEY', default=''),
+    'API_SECRET': config('CLOUDINARY_API_SECRET', default=''),
+    'SECURE': True,
+}
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
@@ -132,6 +139,10 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+if all(CLOUDINARY_STORAGE[key] for key in ('CLOUD_NAME', 'API_KEY', 'API_SECRET')):
+    STORAGES['default'] = {
+        'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
+    }
 
 # ──────────────────────────────────────
 # Default primary key
@@ -173,13 +184,6 @@ SESSION_COOKIE_AGE = 86400 * 30  # 30 days
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024  # 5 MB
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 MB
-
-# ──────────────────────────────────────
-# Razorpay (stub)
-# ──────────────────────────────────────
-
-RAZORPAY_KEY_ID = config('RAZORPAY_KEY_ID', default='rzp_test_xxxxx')
-RAZORPAY_KEY_SECRET = config('RAZORPAY_KEY_SECRET', default='xxxxx')
 
 # ──────────────────────────────────────
 # Logging

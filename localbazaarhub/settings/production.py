@@ -4,8 +4,6 @@ Production settings for BAZAR.
 
 import os
 
-import dj_database_url
-
 from decouple import Csv, config
 
 from .base import *  # noqa: F401, F403
@@ -15,14 +13,14 @@ DEBUG = False
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost', cast=Csv())
 
 # ──────────────────────────────────────
-# Database – PostgreSQL via DATABASE_URL
+# Database – SQLite (Render free web services have ephemeral storage)
 # ──────────────────────────────────────
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL', default='sqlite:///db.sqlite3'),
-        conn_max_age=600,
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # noqa: F405
+    },
 }
 
 # ──────────────────────────────────────
@@ -39,7 +37,7 @@ STORAGES['staticfiles'] = {  # noqa: F405
 # ──────────────────────────────────────
 # Security
 # ──────────────────────────────────────
-# Render (and Railway) terminate SSL at the proxy, so Django never
+# Render terminates SSL at the proxy, so Django never
 # sees an HTTPS request directly. SECURE_SSL_REDIRECT must be False
 # or the proxy and Django enter an infinite 301 loop.
 # The proxy header tells Django the original request was HTTPS.
