@@ -4,12 +4,12 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+<section class="bazar-hero bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
     <div class="max-w-7xl mx-auto px-4 py-12 md:py-20">
-        <div class="text-center">
-            <h1 class="text-3xl md:text-5xl font-bold mb-2">BAZAR</h1>
-            <p class="text-xl md:text-2xl font-medium text-indigo-100 mb-3">Discover Shops Around You</p>
-            <p class="text-base text-indigo-200 mb-8 max-w-xl mx-auto">A hyperlocal marketplace where you can explore nearby shops and browse their product catalogs.</p>
+        <div class="bazar-hero-content text-center">
+            <span class="bazar-eyebrow">YOUR NEIGHBORHOOD, ON ONE MAP</span>
+            <h1 class="text-3xl md:text-5xl font-bold mb-2">Discover shops around you</h1>
+            <p class="text-base text-indigo-200 mb-8 max-w-xl mx-auto">Find local stores, browse what they offer, then collect your order and pay at the shop.</p>
 
             <!-- City / Pincode Search -->
             <form action="{% url 'shops:list' %}" method="get" class="max-w-lg mx-auto">
@@ -18,7 +18,7 @@
                            class="flex-1 px-4 py-3 rounded-lg text-gray-800 focus:ring-2 focus:ring-yellow-400 focus:outline-none">
                     <input type="text" name="pincode" placeholder="or Pincode"
                            class="sm:w-32 px-4 py-3 rounded-lg text-gray-800 focus:ring-2 focus:ring-yellow-400 focus:outline-none">
-                    <button type="submit" class="bg-yellow-400 text-gray-900 font-semibold px-6 py-3 rounded-lg hover:bg-yellow-300 transition">
+                    <button type="submit" class="bazar-primary-button bg-yellow-400 text-gray-900 font-semibold px-6 py-3 rounded-lg hover:bg-yellow-300 transition">
                         Find Shops
                     </button>
                 </div>
