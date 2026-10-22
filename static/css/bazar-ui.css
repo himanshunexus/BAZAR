@@ -156,6 +156,7 @@ a.bg-white.rounded-xl:hover, .bg-white.rounded-xl.hover\:shadow-md:hover { box-s
 .bazar-admin { background: #f3f0ee !important; }
 .bazar-admin aside.bg-gray-900 { background: linear-gradient(175deg, #391722, #4a1f2d 64%, #563348) !important; box-shadow: 8px 0 26px rgb(53 21 31 / 12%); }
 .bazar-admin aside .border-gray-700 { border-color: rgb(255 255 255 / 13%) !important; }
+.bazar-admin aside .text-indigo-400, .bazar-admin main > .md\:hidden.bg-gray-900 .text-indigo-400 { color: #c9e3ef !important; }
 .bazar-admin aside a { transition: background-color var(--bazar-fast) ease, color var(--bazar-fast) ease, transform var(--bazar-fast) ease; }
 .bazar-admin aside a:hover { transform: translateX(2px); }
 .bazar-admin aside .bg-indigo-600 { color: var(--bazar-wine-deep) !important; background: #cfe3ee !important; }
