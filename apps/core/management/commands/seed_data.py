@@ -80,7 +80,102 @@ DEMO_SHOPS = [
             ('Smartphone (Demo)', 'mobile-accessories', 'Sample smartphone listing. Demo listing; confirm availability with the shop.', 14999, 'piece', 'https://images.unsplash.com/photo-1588182464121-05a6397e3a5b?auto=format&fit=crop&fm=jpg&q=80&w=1200', 'Photo by Amaan Ali on Unsplash'),
         ],
     },
+    {
+        'email': 'demo-clothing@bazar.local', 'name': 'Demo Everyday Clothing',
+        'slug': 'demo-everyday-clothing', 'category': 'clothing',
+        'description': 'A sample neighborhood clothing shop. Demo listings only.',
+        'address': 'Demo Clothing Market', 'city': 'Bengaluru', 'pincode': '560004',
+        'contact_phone': '910000000004', 'products': [],
+    },
+    {
+        'email': 'demo-pharmacy@bazar.local', 'name': 'Demo Neighborhood Pharmacy',
+        'slug': 'demo-neighborhood-pharmacy', 'category': 'pharmacy',
+        'description': 'A sample neighborhood pharmacy. Demo listings only.',
+        'address': 'Demo Health Street', 'city': 'Bengaluru', 'pincode': '560005',
+        'contact_phone': '910000000005', 'products': [],
+    },
 ]
+
+# Ten catalog entries are available for every product category. Existing demo
+# listings count toward the total, so the seed fills only the remaining slots.
+# Photos are reused by category in Cloudinary to keep startup uploads small.
+EXPANDED_CATALOG = {
+    'rice-grains': {
+        'shop': 'demo-fresh-market', 'unit': 'kg', 'price': 72,
+        'image': 'photo-1586201375761-83865001e31c',
+        'products': ['Sona Masoori Rice', 'Basmati Rice', 'Kolam Rice', 'Idli Rice', 'Brown Rice', 'Raw Ponni Rice', 'Steamed Rice', 'Poha (Flattened Rice)', 'Whole Wheat Atta', 'Ragi Flour'],
+    },
+    'dal-pulses': {
+        'shop': 'demo-fresh-market', 'unit': 'kg', 'price': 110,
+        'image': 'photo-1515543904379-3d757afe72e4',
+        'products': ['Toor Dal', 'Moong Dal', 'Masoor Dal', 'Chana Dal', 'Urad Dal', 'Kabuli Chana', 'Black Chana', 'Whole Green Moong', 'Rajma', 'White Peas'],
+    },
+    'cooking-oil': {
+        'shop': 'demo-fresh-market', 'unit': 'litre', 'price': 145,
+        'image': 'photo-1474979266404-7eaacbcd87c5',
+        'products': ['Sunflower Oil', 'Groundnut Oil', 'Mustard Oil', 'Rice Bran Oil', 'Coconut Oil', 'Sesame Oil', 'Soybean Oil', 'Olive Oil', 'Ghee', 'Cold-Pressed Groundnut Oil'],
+    },
+    'spices-masala': {
+        'shop': 'demo-fresh-market', 'unit': '100 g', 'price': 45,
+        'image': 'photo-1532336414038-cf19250c5757',
+        'products': ['Turmeric Powder', 'Red Chilli Powder', 'Coriander Powder', 'Cumin Seeds', 'Garam Masala', 'Black Pepper', 'Mustard Seeds', 'Cardamom', 'Cinnamon Sticks', 'Kitchen King Masala'],
+    },
+    'snacks-biscuits': {
+        'shop': 'demo-corner-bakery', 'unit': 'pack', 'price': 35,
+        'image': 'photo-1738898326912-83ec04de4ccf',
+        'products': ['Butter Cookies', 'Salted Potato Chips', 'Masala Peanuts', 'Cream Biscuits', 'Rusk Toast', 'Chocolate Cookies', 'Banana Chips', 'Crackers', 'Baked Mathri', 'Mixed Namkeen'],
+    },
+    'beverages': {
+        'shop': 'demo-corner-bakery', 'unit': 'piece', 'price': 30,
+        'image': 'photo-1602101888216-252a1aeead4a',
+        'products': ['Filter Coffee', 'Assam Tea', 'Green Tea', 'Mango Juice', 'Orange Juice', 'Lemon Soda', 'Coconut Water', 'Hot Chocolate', 'Cold Coffee', 'Masala Chai'],
+    },
+    'dairy-eggs': {
+        'shop': 'demo-fresh-market', 'unit': 'pack', 'price': 65,
+        'image': 'photo-1563636619-e9143da7973b',
+        'products': ['Toned Milk', 'Full Cream Milk', 'Curd', 'Paneer', 'Butter', 'Cheddar Cheese', 'Fresh Cream', 'Buttermilk', 'Farm Eggs (6)', 'Farm Eggs (12)'],
+    },
+    'personal-care': {
+        'shop': 'demo-fresh-market', 'unit': 'piece', 'price': 85,
+        'image': 'photo-1608248543803-ba4f8c70ae0b',
+        'products': ['Aloe Vera Face Wash', 'Herbal Shampoo', 'Coconut Hair Oil', 'Bathing Soap', 'Toothpaste', 'Toothbrush', 'Body Lotion', 'Hand Wash', 'Sunscreen SPF 30', 'Deodorant'],
+    },
+    'cleaning-household': {
+        'shop': 'demo-fresh-market', 'unit': 'piece', 'price': 75,
+        'image': 'photo-1585421514738-01798e348b17',
+        'products': ['Laundry Detergent', 'Dishwashing Liquid', 'Floor Cleaner', 'Toilet Cleaner', 'Glass Cleaner', 'Scrub Sponge Set', 'Garbage Bags', 'Microfiber Cloth', 'Room Freshener', 'Disinfectant Spray'],
+    },
+    'mobile-accessories': {
+        'shop': 'demo-mobile-and-more', 'unit': 'piece', 'price': 299,
+        'image': 'photo-1588182464121-05a6397e3a5b',
+        'products': ['USB-C Charging Cable', '20W Fast Charger', 'Wireless Earbuds', 'Phone Case', 'Tempered Glass Screen Guard', 'Power Bank 10000mAh', 'Bluetooth Speaker', 'Car Phone Mount', 'Wired Earphones', 'USB-C OTG Adapter'],
+    },
+    'clothing-men': {
+        'shop': 'demo-everyday-clothing', 'unit': 'piece', 'price': 499,
+        'image': 'photo-1523381210434-271e8be1f52b',
+        'products': ['Classic Cotton T-Shirt', 'Casual Oxford Shirt', 'Everyday Polo Shirt', 'Slim Fit Jeans', 'Cotton Chinos', 'Lightweight Hoodie', 'Checked Casual Shirt', 'Cotton Kurta', 'Track Pants', 'Denim Jacket'],
+    },
+    'clothing-women': {
+        'shop': 'demo-everyday-clothing', 'unit': 'piece', 'price': 599,
+        'image': 'photo-1483985988355-763728e1935b',
+        'products': ['Cotton Kurti', 'Everyday Top', 'Floral Summer Dress', 'Straight Fit Jeans', 'Cotton Leggings', 'Printed Dupatta', 'Linen Shirt', 'Casual Palazzo Pants', 'Knit Cardigan', 'Traditional Saree'],
+    },
+    'medicines': {
+        'shop': 'demo-neighborhood-pharmacy', 'unit': 'pack', 'price': 50,
+        'image': 'photo-1584308666744-24d5c474f2ae',
+        'products': ['Digital Thermometer', 'Adhesive Bandages', 'Antiseptic Liquid', 'Cotton Roll', 'Oral Rehydration Salts', 'Vitamin C Tablets', 'Hand Sanitizer', 'Hot Water Bag', 'First Aid Kit', 'Disposable Face Masks'],
+    },
+    'fresh-fruits': {
+        'shop': 'demo-fresh-market', 'unit': 'kg', 'price': 90,
+        'image': 'photo-1610832958506-aa56368176cf',
+        'products': ['Alphonso Mangoes', 'Nagpur Oranges', 'Kashmir Apples', 'Robusta Bananas', 'Green Grapes', 'Pomegranate', 'Papaya', 'Sweet Lime', 'Pineapple', 'Watermelon'],
+    },
+    'fresh-vegetables': {
+        'shop': 'demo-fresh-market', 'unit': 'kg', 'price': 55,
+        'image': 'photo-1714224247661-ee250f55a842',
+        'products': ['Tomatoes', 'Potatoes', 'Red Onions', 'Carrots', 'Spinach', 'Cauliflower', 'Green Capsicum', 'Cucumber', 'Green Beans', 'Fresh Coriander'],
+    },
+}
 
 DEMO_ROLES = [
     ('DEMO_ADMIN_EMAIL', 'DEMO_ADMIN_PASSWORD', 'admin@bazar.local', 'BAZAR Demo Admin', 'admin'),
@@ -164,6 +259,7 @@ class Command(BaseCommand):
             cloudinary_enabled = False
             uploader = None
 
+        shops_by_slug = {}
         for shop_data in DEMO_SHOPS:
             seller, _ = get_user_model().objects.get_or_create(
                 email=shop_data['email'],
@@ -189,6 +285,7 @@ class Command(BaseCommand):
                     'is_verified': True, 'is_active': True,
                 },
             )
+            shops_by_slug[shop.slug] = shop
             for name, category_slug, description, price, unit, image_url, attribution in shop_data['products']:
                 product_category = ProductCategory.objects.get(slug=category_slug)
                 product, _ = Product.objects.update_or_create(
@@ -211,6 +308,78 @@ class Command(BaseCommand):
                     ProductImage.objects.update_or_create(
                         product=product, order=0,
                         defaults={'image': public_id, 'alt_text': f'{name} — {attribution}'},
+                    )
+                except Exception as exc:
+                    self.stderr.write(self.style.WARNING(
+                        f'Could not sync demo image for {name}: {exc}'
+                    ))
+
+        # Fill each product category to exactly ten listings across the demo
+        # shops. The original hand-picked demo listings count toward the total.
+        for category_slug, catalog in EXPANDED_CATALOG.items():
+            category = ProductCategory.objects.get(slug=category_slug)
+            shop = shops_by_slug[catalog['shop']]
+            count = Product.objects.filter(
+                category=category,
+                shop__slug__in=shops_by_slug.keys(),
+                is_active=True,
+            ).count()
+            needed = max(0, 10 - count)
+            image_url = (
+                f"https://images.unsplash.com/{catalog['image']}"
+                '?auto=format&fit=crop&fm=jpg&q=80&w=1200'
+            )
+            public_id = f'bazar-demo/categories/{category_slug}'
+            cloudinary_public_id = f'media/{public_id}'
+            image_available = False
+            if cloudinary_enabled:
+                try:
+                    try:
+                        api.resource(cloudinary_public_id, resource_type='image')
+                    except Exception:
+                        uploader.upload(
+                            image_url,
+                            public_id=cloudinary_public_id,
+                            resource_type='image',
+                        )
+                    image_available = True
+                except Exception as exc:
+                    self.stderr.write(self.style.WARNING(
+                        f'Could not sync category image for {category_slug}: {exc}'
+                    ))
+            for index, name in enumerate(catalog['products'], start=1):
+                product = Product.objects.filter(
+                    shop=shop, slug=slugify(name), category=category,
+                ).first()
+                if product is None:
+                    if needed == 0:
+                        break
+                    product, _ = Product.objects.update_or_create(
+                        shop=shop, slug=slugify(name),
+                        defaults={
+                            'name': name,
+                            'description': f'{name}, available from a local demo shop. Demo listing; confirm availability with the shop.',
+                            'category': category,
+                            'price': catalog['price'] + (index - 1) * 7,
+                            'stock': 10,
+                            'unit': catalog['unit'],
+                            'is_active': True,
+                        },
+                    )
+                    needed -= 1
+                elif not product.is_active and needed > 0:
+                    product.is_active = True
+                    product.save(update_fields=['is_active', 'updated_at'])
+                    needed -= 1
+                if not image_available:
+                    continue
+                try:
+                    ProductImage.objects.update_or_create(
+                        product=product, order=0,
+                        defaults={
+                            'image': public_id,
+                            'alt_text': f'{name} — category photo',
+                        },
                     )
                 except Exception as exc:
                     self.stderr.write(self.style.WARNING(
