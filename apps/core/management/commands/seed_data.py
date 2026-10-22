@@ -214,7 +214,7 @@ CATALOG_IMAGE_URLS = {
         "https://images.meesho.com/images/products/593921258/aklom_512.webp?width=512",
         "https://www.chaisangroups.com/images/spice-powders-vibrant.png",
         "https://images.unsplash.com/photo-1532336414038-cf19250c5757?auto=format&fit=crop&fm=jpg&q=80&w=1200",
-        "https://i0.wp.com/spicechronicles.com/wp-content/uploads/2015/03/Masala_650.jpg?ssl=1",
+        "https://tasteforlife.com/sites/default/files/living-well/eco-home/autumn-simmer-pot-recipes/autumn-simmer-pot-recipes.jpg",
         "https://amitfoods.com/images/about-img.jpg",
     ],
     "snacks-biscuits": [
@@ -609,6 +609,10 @@ class Command(BaseCommand):
                         },
                     )
                 except Exception as exc:
+                    # Do not keep the old shared category image if a unique
+                    # product photo cannot be fetched; the template then uses
+                    # its neutral image placeholder instead.
+                    ProductImage.objects.filter(product=product, order=0).delete()
                     self.stderr.write(self.style.WARNING(
                         f'Could not sync product photo for {name}: {exc}'
                     ))
