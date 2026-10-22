@@ -121,7 +121,9 @@ class Command(BaseCommand):
     def _seed_demo_users(self):
         User = get_user_model()
         for email_key, password_key, default_email, name, role in DEMO_ROLES:
-            email = os.environ.get(email_key, default_email)
+            # Shop owners must use the fixed demo email referenced by DEMO_SHOPS.
+            # Allowing a separate override here can leave the catalog without an owner.
+            email = default_email if role == 'seller' else os.environ.get(email_key, default_email)
             password = os.environ.get(password_key, '')
             defaults = {
                 'full_name': name,
@@ -163,7 +165,17 @@ class Command(BaseCommand):
             uploader = None
 
         for shop_data in DEMO_SHOPS:
-            seller = get_user_model().objects.get(email=shop_data['email'])
+            seller, _ = get_user_model().objects.get_or_create(
+                email=shop_data['email'],
+                defaults={
+                    'full_name': 'Demo Seller',
+                    'is_seller': True,
+                    'is_verified': True,
+                },
+            )
+            seller.is_seller = True
+            seller.is_verified = True
+            seller.save(update_fields=['is_seller', 'is_verified'])
             category = Category.objects.get(slug=shop_data['category'])
             shop, _ = Shop.objects.update_or_create(
                 owner=seller,
