@@ -202,11 +202,12 @@ class Command(BaseCommand):
                 if not cloudinary_enabled:
                     continue
                 public_id = f"bazar-demo/products/{shop.slug}-{product.slug}"
+                cloudinary_public_id = f"media/{public_id}"
                 try:
                     try:
-                        api.resource(public_id, resource_type='image')
+                        api.resource(cloudinary_public_id, resource_type='image')
                     except Exception:
-                        uploader.upload(image_url, public_id=public_id, resource_type='image')
+                        uploader.upload(image_url, public_id=cloudinary_public_id, resource_type='image')
                     ProductImage.objects.update_or_create(
                         product=product, order=0,
                         defaults={'image': public_id, 'alt_text': f'{name} — {attribution}'},
