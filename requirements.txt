@@ -5,10 +5,6 @@
 # Framework
 Django>=5.0,<6.0
 
-# Database
-psycopg2-binary>=2.9
-dj-database-url>=2.1
-
 # Server
 gunicorn>=22.0
 whitenoise>=6.6
@@ -32,5 +28,5 @@ Pillow>=10.0
 # Environment & Config
 python-decouple>=3.8
 
-# Payment (stub — no keys needed yet)
-razorpay>=1.4
+# Cloud image storage
+django-cloudinary-storage>=0.3.0,<0.4.0
