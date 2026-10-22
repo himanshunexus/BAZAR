@@ -63,9 +63,8 @@ def checkout(request):
     if request.method == 'POST':
         name = request.POST.get('name', '').strip()
         phone = request.POST.get('phone', '').strip()
-        address = request.POST.get('address', '').strip()
 
-        if not all([name, phone, address]):
+        if not all([name, phone]):
             messages.error(request, 'Please fill in all fields.')
             return render(request, 'cart/checkout.html', {'cart': cart})
 
@@ -85,8 +84,8 @@ def checkout(request):
                         shop=shop,
                         customer_name=name,
                         customer_phone=phone,
-                        customer_address=address,
-                        payment_method='cod',
+                        customer_address='',
+                        payment_method='pay_at_shop',
                         total_amount=total,
                     )
                     for item in items:
@@ -105,6 +104,7 @@ def checkout(request):
                     created_orders.append(order)
 
                 cart.clear()
+                request.session['last_order_ids'] = [str(order.order_id) for order in created_orders]
                 return redirect('cart:order_success')
 
         except Exception:
@@ -115,7 +115,13 @@ def checkout(request):
 
 
 def order_success(request):
-    return render(request, 'cart/order_success.html')
+    order_ids = request.session.get('last_order_ids', [])
+    orders = (
+        Order.objects.filter(order_id__in=order_ids)
+        .select_related('shop')
+        .prefetch_related('items')
+    )
+    return render(request, 'cart/order_success.html', {'orders': orders})
 
 
 # ──────────────────────────────────────
