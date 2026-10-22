@@ -1,68 +1,81 @@
 {% extends 'base.html' %}
 
 {% block title %}Discover Shops Around You{% endblock %}
+{% block meta_description %}Find neighborhood shops, explore their products, and place pickup orders with BAZAR.{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="bazar-hero bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-    <div class="max-w-7xl mx-auto px-4 py-12 md:py-20">
-        <div class="bazar-hero-content text-center">
-            <span class="bazar-eyebrow">YOUR NEIGHBORHOOD, ON ONE MAP</span>
-            <h1 class="text-3xl md:text-5xl font-bold mb-2">Discover shops around you</h1>
-            <p class="text-base text-indigo-200 mb-8 max-w-xl mx-auto">Find local stores, browse what they offer, then collect your order and pay at the shop.</p>
+<section class="bazar-hero">
+    <div class="max-w-7xl mx-auto px-4 py-12 md:py-16">
+        <div class="bazar-hero-content bazar-hero-layout">
+            <div class="bazar-hero-copy">
+                <span class="bazar-eyebrow"><span aria-hidden="true">●</span> LOCAL SHOPS, CLOSE TO HOME</span>
+                <h1>Discover your neighborhood’s <em>best local shops.</em></h1>
+                <p class="max-w-2xl mb-0">Browse independent stores and their products. Place an order for pickup, then pay the shop directly when you collect it.</p>
 
-            <!-- City / Pincode Search -->
-            <form action="{% url 'shops:list' %}" method="get" class="max-w-lg mx-auto">
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <input type="text" name="city" placeholder="Enter your city..."
-                           class="flex-1 px-4 py-3 rounded-lg text-gray-800 focus:ring-2 focus:ring-yellow-400 focus:outline-none">
-                    <input type="text" name="pincode" placeholder="or Pincode"
-                           class="sm:w-32 px-4 py-3 rounded-lg text-gray-800 focus:ring-2 focus:ring-yellow-400 focus:outline-none">
-                    <button type="submit" class="bazar-primary-button bg-yellow-400 text-gray-900 font-semibold px-6 py-3 rounded-lg hover:bg-yellow-300 transition">
-                        Find Shops
-                    </button>
-                </div>
-            </form>
+                <form action="{% url 'shops:list' %}" method="get" class="bazar-hero-search">
+                    <div>
+                        <label class="sr-only" for="home-city">City</label>
+                        <input id="home-city" type="text" name="city" placeholder="Enter your city" autocomplete="address-level2">
+                        <label class="sr-only" for="home-pincode">Pincode</label>
+                        <input id="home-pincode" type="text" name="pincode" inputmode="numeric" autocomplete="postal-code" placeholder="Pincode">
+                        <button type="submit" class="bazar-primary-button px-5 py-3 rounded-lg font-semibold">Find shops</button>
+                    </div>
+                </form>
+            </div>
+
+            <aside class="bazar-hero-aside" aria-label="How ordering works">
+                <div class="bazar-step-number mb-3" aria-hidden="true">↗</div>
+                <strong>Browse nearby. Collect in person.</strong>
+                <span>No delivery or online payment. Contact the shop directly if you have a question.</span>
+            </aside>
         </div>
     </div>
 </section>
 
-<!-- Categories -->
-<section class="max-w-7xl mx-auto px-4 py-10">
-    <h2 class="text-2xl font-bold mb-6">Browse by Category</h2>
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+{% if categories %}
+<section class="max-w-7xl mx-auto px-4 pt-8 pb-4" aria-labelledby="category-heading">
+    <div class="flex flex-wrap items-end justify-between gap-3 mb-4">
+        <div>
+            <span class="bazar-section-kicker">Find what you need</span>
+            <h2 id="category-heading" class="text-2xl md:text-3xl m-0">Browse categories</h2>
+        </div>
+    </div>
+    <nav class="bazar-category-list" aria-label="Shop categories">
         {% for cat in categories %}
-        <a href="{% url 'core:category' slug=cat.slug %}" class="bg-white rounded-xl p-4 text-center shadow-sm hover:shadow-md transition border border-gray-100">
-            <div class="text-3xl mb-2">{{ cat.icon|default:"🏪" }}</div>
-            <div class="text-sm font-medium text-gray-700">{{ cat.name }}</div>
+        <a href="{% url 'core:category' slug=cat.slug %}" class="bazar-category-chip">
+            <span aria-hidden="true">
+                {% if cat.icon %}{{ cat.icon }}
+                {% elif cat.slug == 'grocery-kirana' %}🛒
+                {% elif cat.slug == 'bakery-sweets' %}🥐
+                {% elif cat.slug == 'beauty-personal-care' %}✿
+                {% elif cat.slug == 'clothing-fashion' %}👗
+                {% elif cat.slug == 'dairy-milk' %}🥛
+                {% elif cat.slug == 'electronics' %}📱
+                {% elif cat.slug == 'footwear' %}👟
+                {% elif cat.slug == 'fruits-vegetables' %}🥬
+                {% elif cat.slug == 'furniture' %}🪑
+                {% elif cat.slug == 'hardware-tools' %}🔧
+                {% elif cat.slug == 'home-kitchen' %}🏠
+                {% elif cat.slug == 'automobile-parts' %}🚲
+                {% else %}🏪{% endif %}
+            </span>{{ cat.name }}
         </a>
-        {% empty %}
-        <p class="text-gray-400 col-span-full text-center">Categories coming soon.</p>
         {% endfor %}
-    </div>
-</section>
-
-<!-- Popular Cities -->
-{% if cities %}
-<section class="bg-white py-10">
-    <div class="max-w-7xl mx-auto px-4">
-        <h2 class="text-2xl font-bold mb-6">Popular Cities</h2>
-        <div class="flex flex-wrap gap-3">
-            {% for city in cities %}
-            <a href="{% url 'shops:list' %}?city={{ city }}" class="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-full text-sm font-medium hover:bg-indigo-100 transition">
-                {{ city }}
-            </a>
-            {% endfor %}
-        </div>
-    </div>
+    </nav>
 </section>
 {% endif %}
 
-<!-- Featured Shops -->
 {% if featured_shops %}
-<section class="max-w-7xl mx-auto px-4 py-10">
-    <h2 class="text-2xl font-bold mb-6">Featured Shops</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<section class="max-w-7xl mx-auto px-4 py-10" aria-labelledby="featured-heading">
+    <div class="flex flex-wrap items-end justify-between gap-3 mb-6">
+        <div>
+            <span class="bazar-section-kicker">Selected for your neighborhood</span>
+            <h2 id="featured-heading" class="text-2xl md:text-3xl mb-1">Featured shops</h2>
+            <p class="text-sm text-gray-500 m-0">Explore local storefronts and see what’s available for pickup.</p>
+        </div>
+        <a href="{% url 'shops:list' %}" class="text-sm font-semibold text-indigo-700 hover:underline">Explore all shops <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {% for shop in featured_shops %}
         {% include 'shops/partials/shop_card.html' with shop=shop %}
         {% endfor %}
@@ -70,16 +83,62 @@
 </section>
 {% endif %}
 
-<!-- Recent Shops -->
 {% if recent_shops %}
-<section class="bg-white py-10">
-    <div class="max-w-7xl mx-auto px-4">
-        <h2 class="text-2xl font-bold mb-6">Recently Added Shops</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {% for shop in recent_shops %}
-            {% include 'shops/partials/shop_card.html' with shop=shop %}
-            {% endfor %}
+<section class="max-w-7xl mx-auto px-4 py-10" aria-labelledby="recent-heading">
+    <div class="flex flex-wrap items-end justify-between gap-3 mb-6">
+        <div>
+            <span class="bazar-section-kicker">New around here</span>
+            <h2 id="recent-heading" class="text-2xl md:text-3xl mb-1">Recently added shops</h2>
+            <p class="text-sm text-gray-500 m-0">Meet more independent businesses in your area.</p>
         </div>
+        <a href="{% url 'shops:list' %}" class="text-sm font-semibold text-indigo-700 hover:underline">Browse all shops <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {% for shop in recent_shops %}
+        {% include 'shops/partials/shop_card.html' with shop=shop %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<section class="max-w-7xl mx-auto px-4 py-10" aria-labelledby="pickup-heading">
+    <div class="bazar-pickup-panel p-6 md:p-10">
+        <div class="max-w-3xl">
+            <span class="bazar-section-kicker">A simpler way to shop local</span>
+            <h2 id="pickup-heading" class="text-2xl md:text-4xl leading-tight">Reserve online. Pick up at the shop. Pay in person.</h2>
+            <p class="text-sm md:text-base text-gray-600 leading-relaxed mt-3">BAZAR connects you with nearby stores. Your order stays between you and the shopkeeper.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-7">
+            <article class="bazar-step-card p-5">
+                <span class="bazar-step-number mb-3">1</span>
+                <h3 class="font-semibold text-base mb-1">Find a local shop</h3>
+                <p class="text-sm text-gray-600 m-0 leading-relaxed">Browse shops and check their product listings.</p>
+            </article>
+            <article class="bazar-step-card p-5">
+                <span class="bazar-step-number mb-3">2</span>
+                <h3 class="font-semibold text-base mb-1">Place a pickup order</h3>
+                <p class="text-sm text-gray-600 m-0 leading-relaxed">Choose what you need and send the order to the shop.</p>
+            </article>
+            <article class="bazar-step-card p-5">
+                <span class="bazar-step-number mb-3">3</span>
+                <h3 class="font-semibold text-base mb-1">Collect and pay there</h3>
+                <p class="text-sm text-gray-600 m-0 leading-relaxed">Pick up in person and pay the shop directly.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+{% if cities %}
+<section class="max-w-7xl mx-auto px-4 py-10" aria-labelledby="cities-heading">
+    <div class="mb-5">
+        <span class="bazar-section-kicker">Explore BAZAR</span>
+        <h2 id="cities-heading" class="text-2xl md:text-3xl mb-1">Popular cities</h2>
+        <p class="text-sm text-gray-500 m-0">Start with a city and find shops near you.</p>
+    </div>
+    <div class="flex flex-wrap gap-3">
+        {% for city in cities %}
+        <a href="{% url 'shops:list' %}?city={{ city|urlencode }}" class="bazar-category-chip">{{ city }} <span aria-hidden="true">→</span></a>
+        {% endfor %}
     </div>
 </section>
 {% endif %}
