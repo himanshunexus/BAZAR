@@ -67,7 +67,7 @@ def search(request):
     products = Product.objects.none()
 
     if query:
-        # Simple search using Q objects (works with SQLite and PostgreSQL)
+        # Simple search using Q objects.
         shops = (
             Shop.objects
             .filter(
