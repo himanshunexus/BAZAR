@@ -1,66 +1,62 @@
-<nav class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="flex justify-between items-center h-14">
-            <!-- Logo -->
-            <a href="{% url 'core:home' %}" class="text-xl font-bold text-indigo-600">
-                BAZAR
+<nav class="bazar-navbar sticky top-0 z-50" aria-label="Main navigation">
+    <div class="bazar-nav-shell max-w-7xl mx-auto px-4">
+        <a href="{% url 'core:home' %}" class="bazar-brand" aria-label="BAZAR home">BAZAR<span>.</span></a>
+
+        <form action="{% url 'core:search' %}" method="get" class="bazar-nav-search bazar-desktop-only">
+            <label class="sr-only" for="nav-search">Search shops and products</label>
+            <input id="nav-search" type="search" name="q" value="{{ request.GET.q }}"
+                   placeholder="Search shops and products"
+                   hx-get="{% url 'core:search' %}" hx-trigger="keyup changed delay:300ms"
+                   hx-target="#search-results" hx-push-url="false">
+            <button type="submit" aria-label="Search">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+            </button>
+        </form>
+
+        <div class="bazar-nav-actions">
+            <a href="{% url 'shops:list' %}" class="bazar-nav-link bazar-desktop-only">Shops</a>
+            <a href="{% url 'cart:detail' %}" class="bazar-cart-link" aria-label="Shopping cart">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 1.9-1.4L21 8H6"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
+                {% if cart|length > 0 %}<span class="bazar-cart-count">{{ cart|length }}</span>{% endif %}
+                <span class="bazar-desktop-only">Cart</span>
             </a>
-
-            <!-- Search bar (desktop) -->
-            <div class="hidden md:flex flex-1 max-w-md mx-6">
-                <form action="{% url 'core:search' %}" method="get" class="w-full">
-                    <div class="relative">
-                        <input type="text" name="q" value="{{ request.GET.q }}"
-                               placeholder="Search shops, products..."
-                               class="w-full pl-4 pr-10 py-2 text-sm border border-gray-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                               hx-get="{% url 'core:search' %}" hx-trigger="keyup changed delay:300ms"
-                               hx-target="#search-results" hx-push-url="false">
-                        <button type="submit" class="absolute right-3 top-2.5 text-gray-400">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                            </svg>
-                        </button>
-                    </div>
+            {% if user.is_authenticated %}
+                {% if user.is_staff or user.is_superuser %}<a href="{% url 'platform_admin:dashboard' %}" class="bazar-nav-link bazar-role-link">Admin</a>{% endif %}
+                {% if user.is_seller %}<a href="{% url 'shops:dashboard' %}" class="bazar-nav-link bazar-role-link">Dashboard</a>{% endif %}
+                <a href="{% url 'accounts:profile' %}" class="bazar-nav-link bazar-profile-link">{{ user.get_short_name }}</a>
+                <form method="post" action="{% url 'accounts:logout' %}" class="bazar-desktop-only">
+                    {% csrf_token %}<button type="submit" class="bazar-nav-link">Log out</button>
                 </form>
-            </div>
+            {% else %}
+                <a href="{% url 'accounts:login' %}" class="bazar-nav-link bazar-desktop-only">Log in</a>
+                <a href="{% url 'accounts:register_seller' %}" class="bazar-sell-cta bazar-desktop-only">Sell on BAZAR</a>
+            {% endif %}
 
-            <!-- Nav links -->
-            <div class="flex items-center space-x-4 text-sm">
-                <a href="{% url 'shops:list' %}" class="hidden md:inline text-gray-600 hover:text-indigo-600">Shops</a>
-                <a href="{% url 'cart:detail' %}" class="relative text-gray-600 hover:text-indigo-600">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
-                    </svg>
-                    {% if cart|length > 0 %}
-                    <span class="absolute -top-1 -right-2 bg-indigo-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">{{ cart|length }}</span>
+            <details class="bazar-mobile-menu">
+                <summary aria-label="Open navigation menu">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+                </summary>
+                <div class="bazar-mobile-menu-panel">
+                    <a href="{% url 'shops:list' %}">Browse shops</a>
+                    {% if user.is_authenticated %}
+                        {% if user.is_staff or user.is_superuser %}<a href="{% url 'platform_admin:dashboard' %}">Admin dashboard</a>{% endif %}
+                        {% if user.is_seller %}<a href="{% url 'shops:dashboard' %}">Seller dashboard</a>{% endif %}
+                        <a href="{% url 'accounts:profile' %}">My account</a>
+                        <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button type="submit">Log out</button></form>
+                    {% else %}
+                        <a href="{% url 'accounts:login' %}">Log in</a>
+                        <a href="{% url 'accounts:register' %}">Create account</a>
+                        <a href="{% url 'accounts:register_seller' %}">Sell on BAZAR</a>
                     {% endif %}
-                </a>
-                {% if user.is_authenticated %}
-                    {% if user.is_staff or user.is_superuser %}
-                    <a href="{% url 'platform_admin:dashboard' %}" class="text-indigo-600 font-medium hover:text-indigo-800">Admin</a>
-                    {% endif %}
-                    {% if user.is_seller %}
-                    <a href="{% url 'shops:dashboard' %}" class="text-gray-600 hover:text-indigo-600">Dashboard</a>
-                    {% endif %}
-                    <a href="{% url 'accounts:profile' %}" class="text-gray-600 hover:text-indigo-600">{{ user.get_short_name }}</a>
-                    <form method="post" action="{% url 'accounts:logout' %}" class="inline">
-                        {% csrf_token %}
-                        <button type="submit" class="text-red-500 hover:text-red-600">Logout</button>
-                    </form>
-                {% else %}
-                    <a href="{% url 'accounts:login' %}" class="text-gray-600 hover:text-indigo-600">Login</a>
-                    <a href="{% url 'accounts:register_seller' %}" class="bg-indigo-600 text-white px-3 py-1.5 rounded-full text-xs font-medium hover:bg-indigo-700">Sell on BAZAR</a>
-                {% endif %}
-            </div>
+                </div>
+            </details>
         </div>
-
-        <!-- Mobile search -->
-        <div class="md:hidden pb-3">
-            <form action="{% url 'core:search' %}" method="get">
-                <input type="text" name="q" value="{{ request.GET.q }}"
-                       placeholder="Search shops, products..."
-                       class="w-full pl-4 pr-10 py-2 text-sm border border-gray-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-            </form>
-        </div>
+    </div>
+    <div class="bazar-mobile-search">
+        <form action="{% url 'core:search' %}" method="get">
+            <label class="sr-only" for="mobile-search">Search shops and products</label>
+            <input id="mobile-search" type="search" name="q" value="{{ request.GET.q }}" placeholder="Search shops and products">
+            <button type="submit" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
+        </form>
     </div>
 </nav>
