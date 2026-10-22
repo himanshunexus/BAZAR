@@ -1,8 +1,8 @@
-<a href="{{ shop.get_absolute_url }}" class="bg-white rounded-xl shadow-sm hover:shadow-md transition border border-gray-100 overflow-hidden block">
+<a href="{{ shop.get_absolute_url }}" class="bazar-shop-card bg-white rounded-xl shadow-sm hover:shadow-md transition border border-gray-100 overflow-hidden block">
     {% if shop.banner %}
-    <img src="{{ shop.banner.url }}" alt="{{ shop.name }}" class="w-full h-32 object-cover" loading="lazy">
+    <img src="{{ shop.banner.url }}" alt="{{ shop.name }} storefront" class="w-full h-40 md:h-44 object-cover" loading="lazy">
     {% else %}
-    <div class="w-full h-32 bg-gradient-to-r from-indigo-100 to-purple-100 flex items-center justify-center">
+    <div class="bazar-shop-placeholder w-full h-40 md:h-44 bg-gray-100 flex items-center justify-center">
         <span class="text-4xl">🏪</span>
     </div>
     {% endif %}
@@ -13,11 +13,11 @@
             {% endif %}
             <div class="flex-1 min-w-0">
                 <h3 class="font-semibold text-gray-800 truncate">{{ shop.name }}</h3>
-                <p class="text-xs text-gray-500">{{ shop.city }} · {{ shop.pincode }}</p>
+                <p class="text-xs text-gray-500 mt-1">{{ shop.city }} · {{ shop.pincode }}</p>
             </div>
         </div>
         {% if shop.category %}
-        <span class="inline-block mt-2 px-2 py-0.5 bg-indigo-50 text-indigo-600 rounded text-xs">{{ shop.category.name }}</span>
+        <span class="inline-block mt-3 px-2.5 py-1 bg-indigo-50 text-indigo-600 rounded-full text-xs font-medium">{{ shop.category.name }}</span>
         {% endif %}
         {% if shop.avg_rating %}
         <div class="mt-2 flex items-center text-xs text-yellow-500">
