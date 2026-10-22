@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Admin{% endblock %} - BAZAR Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/bazar-ui.css' %}">
 </head>
-<body class="bg-gray-100 min-h-screen">
+<body class="bazar-admin bg-gray-100 min-h-screen">
 <div class="flex min-h-screen">
     <!-- Sidebar -->
     <aside class="w-60 bg-gray-900 text-white flex-shrink-0 hidden md:block">
