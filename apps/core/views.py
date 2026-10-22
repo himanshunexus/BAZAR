@@ -45,6 +45,7 @@ def category_page(request, slug):
         .filter(is_active=True, is_verified=True, category=category)
         .select_related('category')
         .annotate(avg_rating=Avg('reviews__rating'))
+        .order_by('-is_featured', '-created_at', 'pk')
     )
     city = request.GET.get('city', '')
     if city:
