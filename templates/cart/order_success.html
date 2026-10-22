@@ -3,10 +3,26 @@
 {% block title %}Order Placed{% endblock %}
 
 {% block content %}
-<div class="max-w-md mx-auto px-4 py-16 text-center">
+<div class="max-w-2xl mx-auto px-4 py-16 text-center">
     <div class="text-6xl mb-4">🎉</div>
     <h1 class="text-2xl font-bold mb-2">Order Placed Successfully!</h1>
-    <p class="text-gray-500 mb-6">Thank you for your order. The seller will contact you shortly.</p>
+    <p class="text-gray-500 mb-6">Your order is saved. Contact each shop on WhatsApp to confirm availability and arrange pickup. Payment is made at the shop.</p>
+    {% for order in orders %}
+    <div class="bg-white rounded-xl shadow-sm p-5 mb-4 text-left">
+        <h2 class="font-semibold">{{ order.shop.name }}</h2>
+        <p class="text-sm text-gray-500 mb-3">Order {{ order.order_id|slice:":8" }} · ₹{{ order.total_amount }}</p>
+        <ul class="text-sm text-gray-600 mb-4">
+            {% for item in order.items.all %}
+            <li>{{ item.product_name }} × {{ item.quantity }}</li>
+            {% endfor %}
+        </ul>
+        {% if order.get_whatsapp_url %}
+        <a href="{{ order.get_whatsapp_url }}" target="_blank" rel="noopener" class="inline-block bg-green-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-green-700">Contact shop on WhatsApp</a>
+        {% else %}
+        <p class="text-sm text-red-600">This shop has no WhatsApp number. Contact the shop directly to arrange pickup.</p>
+        {% endif %}
+    </div>
+    {% endfor %}
     <a href="{% url 'core:home' %}" class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
         Continue Shopping
     </a>
