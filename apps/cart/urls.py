@@ -14,13 +14,3 @@ urlpatterns = [
     path('orders/', views.seller_orders, name='seller_orders'),
     path('orders/<uuid:order_id>/', views.seller_order_detail, name='seller_order_detail'),
 ]
-
-# Import payment views safely — don't break all cart URLs if razorpay is missing
-try:
-    from .payment import create_order, payment_callback
-    urlpatterns += [
-        path('payment/create/', create_order, name='payment_create'),
-        path('payment/callback/', payment_callback, name='payment_callback'),
-    ]
-except ImportError:
-    pass

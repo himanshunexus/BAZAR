@@ -35,7 +35,7 @@ def dashboard(request):
         'pending_shops': Shop.objects.filter(is_verified=False, is_active=True).count(),
         'total_products': Product.objects.count(),
         'total_orders': Order.objects.count(),
-        'total_revenue': Order.objects.filter(status='delivered').aggregate(s=Sum('total_amount'))['s'] or 0,
+        'total_revenue': Order.objects.filter(status='completed').aggregate(s=Sum('total_amount'))['s'] or 0,
         'total_reviews': Review.objects.count(),
         'new_users_week': User.objects.filter(date_joined__gte=week_ago).count(),
         'new_shops_week': Shop.objects.filter(created_at__gte=week_ago).count(),
