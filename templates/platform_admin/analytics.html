@@ -59,7 +59,7 @@
             <div class="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg">
                 <span class="text-sm font-medium capitalize
                     {% if item.status == 'pending' %}text-yellow-700
-                    {% elif item.status == 'delivered' %}text-green-700
+                    {% elif item.status == 'completed' %}text-green-700
                     {% elif item.status == 'cancelled' %}text-red-700
                     {% else %}text-blue-700{% endif %}">
                     {{ item.status }}
